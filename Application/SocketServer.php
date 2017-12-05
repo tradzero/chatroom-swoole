@@ -25,9 +25,20 @@ class SocketServer
         $this->socketServer->on('close', [$this, 'onClose']);
     }
 
-    public function message($socketServer, $message)
+    public function message($socketServer, $request)
     {
-        
+        $client = $request->fd;
+        $message = json_decode($request->data);
+        switch ($message->type) {
+            case 'chat':
+                $this->gateway->sendToAll(json_encode($message));
+                $success = [
+                    'type' => 'notice',
+                    'message' => 'successfuly send.'
+                ];
+                $this->gateway->sendToClient($client, $success);
+                break;
+        }
     }
 
     public function onOpen($socketServer, $request)

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <button onclick="sendmessage()">send</button>
 </head>
 <body>
     <script>
@@ -25,6 +26,14 @@
         websocket.onerror = function (evt, e) {
             console.log('Error occured: ' + evt.data);
         };
+
+        function sendmessage() {
+            if (websocket.readyState != 1) {
+                console.error('disconnected');
+                return ;
+            }
+            websocket.send(JSON.stringify({type: 'chat', message: 'test.'}));
+        }
     </script>
 </body>
 </html>

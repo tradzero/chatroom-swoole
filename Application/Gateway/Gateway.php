@@ -20,6 +20,7 @@ class Gateway
 
     public function sendToClient($client, $message)
     {
+        $message = json_encode($message);
         $this->server->push($client, $message);
     }
 
