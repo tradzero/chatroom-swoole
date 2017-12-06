@@ -36,7 +36,8 @@ class SocketServer
                     'type' => 'notice',
                     'message' => 'successfuly send.'
                 ];
-                $this->gateway->sendToClient($client, $success);
+                $successMessage = json_encode($success);
+                $this->gateway->sendToClient($client, $successMessage);
                 break;
         }
     }
