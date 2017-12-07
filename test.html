@@ -34,7 +34,7 @@
         };
 
         function sendmessage() {
-            if (websocket.readyState != 1) {
+            if (websocket.readyState != websocket.OPEN) {
                 console.error('disconnected');
                 return ;
             }
