@@ -5,7 +5,7 @@ namespace App;
 use swoole_websocket_server;
 use App\Gateway\Gateway;
 
-class SocketServer 
+class SocketServer
 {
     private $gateway;
 
@@ -21,6 +21,7 @@ class SocketServer
         $this->gateway = new Gateway($this->socketServer);
         
         $this->socketServer->on('open', [$this, 'onOpen']);
+        $this->socketServer->on('workerStart', [$this, 'onWorkerStart']);
         $this->socketServer->on('message', [$this, 'message']);
         $this->socketServer->on('close', [$this, 'onClose']);
     }
@@ -38,6 +39,10 @@ class SocketServer
                 ];
                 $successMessage = json_encode($success);
                 $this->gateway->sendToClient($client, $successMessage);
+                break;
+            case 'pong':
+                var_dump(1);
+                $this->gateway->pong($client);
                 break;
         }
     }
@@ -66,5 +71,15 @@ class SocketServer
     public function start()
     {
         $this->socketServer->start();
+    }
+
+    public function onWorkerStart($server, $workerId)
+    {
+        $startHeartbeat = config()->get('gateway.heartbeat');
+        if ($workerId == 0 && $startHeartbeat) {
+            swoole_timer_tick(2000, function () {
+                $this->gateway->ping();
+            });
+        }
     }
 }

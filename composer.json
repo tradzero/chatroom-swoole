@@ -2,7 +2,8 @@
     "name": "fatezero/swoole",
     "type": "project",
     "require": {
-        "vlucas/phpdotenv": "^2.4"
+        "vlucas/phpdotenv": "^2.4",
+        "hassankhan/config": "^0.11.2"
     },
     "autoload": {
         "psr-4": {

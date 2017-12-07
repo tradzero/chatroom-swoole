@@ -20,6 +20,12 @@
         };
 
         websocket.onmessage = function (evt) {
+            var data = JSON.parse(evt.data);
+            
+            if (data.type == 'ping') {
+                websocket.send(JSON.stringify({type: 'pong'}));
+            }
+            
             console.log('Retrieved data from server: ' + evt.data);
         };
 
