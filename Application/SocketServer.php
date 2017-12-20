@@ -41,7 +41,6 @@ class SocketServer
                 $this->gateway->sendToClient($client, $successMessage);
                 break;
             case 'pong':
-                var_dump(1);
                 $this->gateway->pong($client);
                 break;
         }
